@@ -79,6 +79,11 @@ namespace DroolMissle
             return new TokenMatchCriteria(propName, s => int.TryParse(s, out var i) && i == exactValue, $"{propName} should match exactly");
         }
 
+        public static TokenMatchCriteria IgnoreAllSubProperties(string propName)
+        {
+            return new TokenMatchCriteria(propName + ".*-", s => true, "Ignored Property");
+        }
+
         public TokenMatchCriteria(string propertyPath, Func<string, bool> matcher, string description)
         {
             PropertyPath = propertyPath;
