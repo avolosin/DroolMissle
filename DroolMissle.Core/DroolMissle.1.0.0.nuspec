@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>DroolMissle</id>
+    <version>1.0.1</version>
+    <title>DroolMissle - an opinonated set of HTTP API testing tools including JSON Snapshot comparison.</title>
+    <authors>Drooliver</authors>
+    <owners></owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/HandspikeDuck/DroolMissle/main/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/HandspikeDuck/DroolMissle</projectUrl>
+    <description>Opinonated HTTP Utilities to aide in Integration testing. Including JSON Snapshot testing.</description>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="12.0.1" />
+      <dependency id="NUnit" version="3.12.0" />
+      <dependency id="Shouldly" version="3.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\net5.0\DroolMissle.Core.dll" target="lib\net5.0\DroolMissle.Core.dll" />
+  </files>
+</package>
