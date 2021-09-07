@@ -136,16 +136,27 @@ namespace DroolMissle
                 Token = jv.Path,
                 ExpectedJsonValue = JsonConvert.SerializeObject(jv.Value),
             };
+            if (jv.Type == JTokenType.String)
+            {
+                tmr.ExpectedJsonValue = jv.Value.ToString();
+            }
 
             if (actualValue is JValue actualJValue)
             {
-                tmr.ActualJsonValue = JsonConvert.SerializeObject(actualJValue.Value);
+                if (actualJValue.Type == JTokenType.String)
+                {
+                    tmr.ActualJsonValue = actualJValue.Value.ToString();
+                }
+                else
+                {
+                    tmr.ActualJsonValue = JsonConvert.SerializeObject(actualJValue.Value);
+                }                
 
                 //see if we can find one by an exact path
                 if (_matchCriteriaByPropertyName.Contains(jv.Path))
                 {
                     var criteria = _matchCriteriaByPropertyName[jv.Path].First();
-                    tmr.IsMatch = criteria.Matches(actualJValue.Value.ToString());
+                    tmr.IsMatch = criteria.Matches(tmr.ActualJsonValue);
                     tmr.IsCriteriaMatch = true;
                 }
                 else if (jv.Path.Contains("[")) //does it look like it might be an array path?
@@ -156,12 +167,11 @@ namespace DroolMissle
                     if (_matchCriteriaByPropertyName.Contains(genericArrayPath))
                     {
                         var criteria = _matchCriteriaByPropertyName[genericArrayPath].First();
-                        tmr.IsMatch = criteria.Matches(actualJValue.Value.ToString());
+                        tmr.IsMatch = criteria.Matches(tmr.ActualJsonValue);
                         tmr.IsCriteriaMatch = true;
                     }
                 }
-
-                else if (jv.Path.Contains(".")) //no exact match or generic array match - check the path to see if we allow for ignoring
+                if (jv.Path.Contains(".")) //no exact match or generic array match - check the path to see if we allow for ignoring
                 {
                     var navigationProps = jv.Path.Split(".");
                     var navProp = string.Empty;

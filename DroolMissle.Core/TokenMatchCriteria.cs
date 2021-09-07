@@ -24,7 +24,7 @@ namespace DroolMissle
 
         public static TokenMatchCriteria AnyIpV4Address(string propName)
         {    
-            return new TokenMatchCriteria(propName, d => IPAddress.TryParse(d, out var ip) && ip.AddressFamily != AddressFamily.InterNetwork, $"{propName} should be a valid IP Address");
+            return new TokenMatchCriteria(propName, d => IPAddress.TryParse(d, out var ip) && ip.AddressFamily == AddressFamily.InterNetwork, $"{propName} should be a valid IP Address");
         }
 
         public static TokenMatchCriteria AnyFutureDateUtc(string propName)
@@ -42,7 +42,7 @@ namespace DroolMissle
             return new TokenMatchCriteria(propName, d => int.TryParse(d, out var _), $"{propName} should be a valid integer");
         }
 
-        public static TokenMatchCriteria Exclude(string propName)
+        public static TokenMatchCriteria Ignore(string propName)
         {
             return new TokenMatchCriteria(propName, d => true, $"Property was excluded but somehow didn't match!? WTF?!");
         }
