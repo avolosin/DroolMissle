@@ -140,12 +140,20 @@ namespace DroolMissle
             {
                 tmr.ExpectedJsonValue = jv.Value.ToString();
             }
+            else if (jv.Type == JTokenType.Date && (jv.Value is DateTime jDate))
+            {
+                tmr.ExpectedJsonValue = jDate.ToString("O");
+            }
 
             if (actualValue is JValue actualJValue)
             {
                 if (actualJValue.Type == JTokenType.String)
                 {
                     tmr.ActualJsonValue = actualJValue.Value.ToString();
+                }
+                else if (actualJValue.Type == JTokenType.Date && actualJValue.Value is DateTime jDate)
+                {
+                    tmr.ActualJsonValue = jDate.ToString("O");
                 }
                 else
                 {
@@ -156,8 +164,12 @@ namespace DroolMissle
                 if (_matchCriteriaByPropertyName.Contains(jv.Path))
                 {
                     var criteria = _matchCriteriaByPropertyName[jv.Path].First();
-                    tmr.IsMatch = criteria.Matches(tmr.ActualJsonValue);
-                    tmr.IsCriteriaMatch = true;
+                    tmr.IsMatch = criteria.Matches(tmr.ExpectedJsonValue,tmr.ActualJsonValue);
+                    tmr.IsTokenMatchApplied = true;
+                    if (!tmr.IsMatch)
+                    {
+                        tmr.MatchDescription = criteria.Description;
+                    }
                 }
                 else if (jv.Path.Contains("[")) //does it look like it might be an array path?
                 {
@@ -167,11 +179,31 @@ namespace DroolMissle
                     if (_matchCriteriaByPropertyName.Contains(genericArrayPath))
                     {
                         var criteria = _matchCriteriaByPropertyName[genericArrayPath].First();
-                        tmr.IsMatch = criteria.Matches(tmr.ActualJsonValue);
-                        tmr.IsCriteriaMatch = true;
+                        tmr.IsMatch = criteria.Matches(tmr.ExpectedJsonValue,tmr.ActualJsonValue);
+                        tmr.IsTokenMatchApplied = true;
+                        if (!tmr.IsMatch)
+                        {
+                            tmr.MatchDescription = criteria.Description;
+                        }
                     }
                 }
-                if (jv.Path.Contains(".")) //no exact match or generic array match - check the path to see if we allow for ignoring
+            }
+            else
+            {
+                if (actualValue?.Type == JTokenType.String)
+                {
+                    tmr.ActualJsonValue = actualValue?.ToString();
+                }
+                else if (actualValue?.Type == JTokenType.Date)
+                {
+                    tmr.ActualJsonValue = actualValue?.ToString();
+                }
+                else
+                {
+                    tmr.ActualJsonValue = JsonConvert.SerializeObject(actualValue);
+                }
+            }
+            if (!tmr.IsTokenMatchApplied && jv.Path.Contains("."))
                 {
                     var navigationProps = jv.Path.Split(".");
                     var navProp = string.Empty;
@@ -183,24 +215,21 @@ namespace DroolMissle
                         if (_matchCriteriaByPropertyName.Contains($"{navProp}*-"))
                         {
                             tmr.IsMatch = true;
-                            tmr.IsCriteriaMatch = true;
+                        tmr.IsTokenMatchApplied = true;
                             tmr.IsIgnored = true;
                             break;
-                        }
                     }
 
                 }
             }
-            else
-            {
-                tmr.ActualJsonValue = JsonConvert.SerializeObject(actualValue);
-            }
+
+
 
             //not yet a match? try exact matching
-            if (!tmr.IsMatch)
+            if (!tmr.IsTokenMatchApplied && !tmr.IsMatch)
             {
                 tmr.IsMatch = tmr.ActualJsonValue == tmr.ExpectedJsonValue;
-                tmr.IsCriteriaMatch = false;
+                tmr.IsTokenMatchApplied = false;                
             }
 
             _matchResults.Add(tmr);

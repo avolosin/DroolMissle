@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Shouldly;
@@ -10,7 +11,7 @@ namespace DroolMissle
 {
     public static class HttpClientExtensionsJson
     {
-        public static string ClassNamePrefixRemoval = String.Empty;
+        public static List<string> ClassNamePrefixRemoval = new List<string>();
         public static HttpRequestCapture ShouldJsonSnapshotCompare(this HttpRequestCapture capture, params TokenMatchCriteria[] matchCriteria)
         {
             return ShouldJsonSnapshotCompare(capture, null, matchCriteria);
@@ -39,28 +40,67 @@ namespace DroolMissle
             {
                 File.WriteAllText(snapshotFilePath, PrettifyJson(capture.ResponseContent));
 
-                Assert.Inconclusive($"Snapshot for {TestContext.CurrentContext.Test.MethodName} was created and should be reviewed before committing results");
+                Assert.Inconclusive($"Snapshot for method={TestContext.CurrentContext.Test.MethodName} was created at={snapshotFilePath} and should be reviewed before committing results");
             }
 
             var tokenMatchResults = JsonComparer.Compare(File.ReadAllText(snapshotFilePath), capture.ResponseContent, matchCriteria);
-            foreach (var r in tokenMatchResults)
+
+            //find the stuff that should have matched based on TokenMatchCriteria being applied
+            var failedTokenMatches = tokenMatchResults.Where(r => r.IsMatch == false && r.IsTokenMatchApplied).ToList();
+            var ftmActions = failedTokenMatches.Select(r => new Action(() =>
             {
-                if (!r.IsMatch)
+                var customMessage = $"token={r.Token};";
+                if (!String.IsNullOrWhiteSpace(stepName))
                 {
-                    r.ActualJsonValue.ShouldBe(r.ExpectedJsonValue, customMessage: r.Token);
+                    customMessage += $" step={stepName};";
                 }
-            }
+                if (!string.IsNullOrWhiteSpace(r.MatchDescription))
+                {
+                    customMessage += $" description={r.MatchDescription};";
+                }
+
+                customMessage += $" file={fileName}";
+
+                r.ActualJsonValue.ShouldBe(r.ExpectedJsonValue, customMessage: customMessage);
+            })).ToArray();
+
+            failedTokenMatches.ShouldSatisfyAllConditions(ftmActions);
+
+            //find the stuff that should have matched based on _exact_ values
+            var failedExactMatches = tokenMatchResults.Where(r => r.IsMatch == false && !r.IsTokenMatchApplied).ToList();
+            var femActions = failedExactMatches.Select(r => new Action(() =>
+            {
+                var customMessage = $"token={r.Token};";
+                if (!String.IsNullOrWhiteSpace(stepName))
+                {
+                    customMessage += $" step={stepName};";
+                }
+
+                if (!string.IsNullOrWhiteSpace(r.MatchDescription))
+                {
+                    customMessage += $" description={r.MatchDescription}";
+                }
+
+                r.ActualJsonValue.ShouldBe(r.ExpectedJsonValue, customMessage);
+            })).ToArray();
+
+            failedExactMatches.ShouldSatisfyAllConditions(femActions);
 
             return capture;
         }
 
 
-        static readonly IList<char> invalidFileNameChars = Path.GetInvalidFileNameChars();
+        
 
         private static string GetSnapshotDirectory()
         {
             var projectDir = Directory.GetParent(TestContext.CurrentContext.TestDirectory).Parent.Parent.FullName;
-            var classPath = TestContext.CurrentContext.Test.ClassName.Replace(ClassNamePrefixRemoval, string.Empty).Split('.');
+            var className = TestContext.CurrentContext.Test.ClassName;
+            foreach (var prefix in ClassNamePrefixRemoval)
+            {
+                className = className.Replace(prefix, string.Empty);
+            }
+            var classPath = className.Split('.');
             var methodName = TestContext.CurrentContext.Test.MethodName;
 
             var path = Path.Combine(projectDir, "__snapshots__");
@@ -73,16 +113,28 @@ namespace DroolMissle
             return Path.Combine(path, methodName);
 
         }
+
+
+        private static Regex _safeTestNameRegex = new Regex(@"[^a-zA-Z0-9 -]", System.Text.RegularExpressions.RegexOptions.Compiled);
+        /// <summary>
+        /// Generates test name that is safe for the purposes of a file name. Can't really use Path.GetInvalidFileNameChars because you might generate
+        /// the files on Windows but run the tests on Linux which has a different set of allowable characters
+        /// </summary>
+        /// <returns></returns>
         private static string GetSafeTestName()
         {
             var methodName = TestContext.CurrentContext.Test.MethodName;
-            var testName = TestContext.CurrentContext.Test.Name;
+            var testName = TestContext.CurrentContext.Test.Name;           
 
             if (methodName != testName)
             {
                 testName = testName.Replace(methodName, string.Empty);
-            }
-            return new string(testName.Select(ch => invalidFileNameChars.Contains(ch) ? '_' : ch).ToArray());
+            }            
+
+            testName = _safeTestNameRegex.Replace(testName, "_");
+
+            //trim any leading or trailing underscores
+            return testName.TrimStart('_').TrimEnd('_');
         }
 
         private static string PrettifyJson(string json)

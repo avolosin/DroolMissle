@@ -41,6 +41,21 @@ namespace DroolMissle
             return capture;
         }
 
+        public static async Task<HttpRequestCapture> TestDeleteAsync<T>(this HttpClient client, string uri, string payload, Encoding encoding, string contentTypeHeader)
+        {
+            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Delete, RequestStartTime = DateTime.UtcNow };
+            var sw = Stopwatch.StartNew();
+            var response = await client.PostAsync(uri, new StringContent(payload, encoding, contentTypeHeader));
+            sw.Stop();
+            capture.RequestDuration = sw.Elapsed;
+            capture.RequestBody = payload;
+            capture.RequestEndTime = DateTime.UtcNow;
+            capture.ResponseStatusCode = response.StatusCode;
+
+            capture.ResponseContent = await response.Content.ReadAsStringAsync();
+            return capture;
+        }
+
         public static async Task<HttpRequestCapture> TestPostCsvAsync(this HttpClient client, string uri, string csvContents, Encoding encoding, string contentTypeHeader)
         {
             var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Post, RequestStartTime = DateTime.UtcNow };
