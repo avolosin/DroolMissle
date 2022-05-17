@@ -1,0 +1,1 @@
+dotnet pack .\DroolMissle.JsonCompare.csproj --configuration Release --output .

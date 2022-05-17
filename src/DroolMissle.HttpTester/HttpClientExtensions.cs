@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Text;
 
-namespace DroolMissle
+namespace DroolMissle.HttpTester
 {
     public static class HttpClientExtensions
     {
@@ -29,6 +27,21 @@ namespace DroolMissle
         public static async Task<HttpRequestCapture> TestPostAsync<T>(this HttpClient client, string uri, string payload, Encoding encoding, string contentTypeHeader)
         {
             var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Post, RequestStartTime = DateTime.UtcNow };
+            var sw = Stopwatch.StartNew();
+            var response = await client.PostAsync(uri, new StringContent(payload, encoding, contentTypeHeader));
+            sw.Stop();
+            capture.RequestDuration = sw.Elapsed;
+            capture.RequestBody = payload;
+            capture.RequestEndTime = DateTime.UtcNow;
+            capture.ResponseStatusCode = response.StatusCode;
+
+            capture.ResponseContent = await response.Content.ReadAsStringAsync();
+            return capture;
+        }
+
+        public static async Task<HttpRequestCapture> TestDeleteAsync<T>(this HttpClient client, string uri, string payload, Encoding encoding, string contentTypeHeader)
+        {
+            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Delete, RequestStartTime = DateTime.UtcNow };
             var sw = Stopwatch.StartNew();
             var response = await client.PostAsync(uri, new StringContent(payload, encoding, contentTypeHeader));
             sw.Stop();

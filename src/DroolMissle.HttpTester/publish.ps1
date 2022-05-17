@@ -1,0 +1,1 @@
+dotnet pack .\DroolMissle.HttpTester.csproj --configuration Release

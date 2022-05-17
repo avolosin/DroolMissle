@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace DroolMissle
+namespace DroolMissle.HttpTester
 {
     public class HttpRequestCapture
     {
