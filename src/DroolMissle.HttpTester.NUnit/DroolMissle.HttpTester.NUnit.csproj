@@ -1,14 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DroolMissle.HttpTester" Version="2.0.0" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DroolMissle.HttpTester" Version="2.0.2" />
+		<PackageReference Include="DroolMissle.JsonCompare" Version="2.0.1" />
+		<PackageReference Include="NUnit" Version="3.13.3" />
+	</ItemGroup>
+
+	<!--nuget package details-->
+	<PropertyGroup>
+		<Id>DroolMissle.HttpTester.NUnit</Id>
+		<Version>2.0.2</Version>
+		<Title>DroolMissle Http Tester for NUnit</Title>
+		<Authors>Oliver the Dog</Authors>
+		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/HandspikeDuck/DroolMissle</RepositoryUrl>
+		<Description>NUnit components to use DroolMissle.HttpTester</Description>
+	</PropertyGroup>
 
 </Project>

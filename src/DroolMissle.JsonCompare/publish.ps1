@@ -1,1 +1,1 @@
-dotnet pack .\DroolMissle.JsonCompare.csproj -p:NuspecFile=DroolMissle.JsonCompare.nuspec --configuration Release --include-source --output .
+dotnet pack .\DroolMissle.JsonCompare.csproj --configuration Release --output .
