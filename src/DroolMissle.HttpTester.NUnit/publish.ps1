@@ -1,0 +1,1 @@
+dotnet pack .\DroolMissle.HttpTester.csproj -p:NuspecFile=DroolMissle.HttpTester.nuspec --configuration Release --include-source --output .

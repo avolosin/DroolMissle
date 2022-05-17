@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>DroolMissle.HttpTester</id>    
+    <version>2.0.1</version>
+    <title>DroolMissle Http Tester - An oppionated library to do snapshot based HTTP testing</title>
+    <authors>Oliver the Dog</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>    
+    <projectUrl>https://github.com/HandspikeDuck/DroolMissle</projectUrl>
+    <description>Test HTTP endpoints using snapshots!</description>
+    <dependencies>
+      <dependency id="DroolMissle.JsonCompare" version="2.0.0" />
+      <dependency id="Newtonsoft.Json" version="12.0.1" />
+      <dependency id="Shouldly" version="4.0.3" />
+    </dependencies>
+  </metadata>  
+</package>

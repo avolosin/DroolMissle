@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DroolMissle.HttpTester" Version="2.0.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DroolMissle.HttpTester\DroolMissle.HttpTester.csproj" />
   </ItemGroup>
 
 </Project>

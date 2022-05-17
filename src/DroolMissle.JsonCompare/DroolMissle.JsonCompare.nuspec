@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>DroolMissle.JsonCompare</id>    
+    <version>2.0.0</version>
+    <title>DroolMissle Json Compare- A robust Json document comparision lib</title>
+    <authors>Oliver the Dog</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>    
+    <projectUrl>https://github.com/HandspikeDuck/DroolMissle</projectUrl>
+    <description>Json Comparison library that supports token pattern matching</description>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="12.0.1" />            
+    </dependencies>
+  </metadata>  
+</package>
