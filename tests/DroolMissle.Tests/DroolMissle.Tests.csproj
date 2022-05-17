@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DroolMissle.Core\DroolMissle.Core.csproj" />
+    <ProjectReference Include="..\..\src\DroolMissle.JsonCompare\DroolMissle.JsonCompare.csproj" />
   </ItemGroup>
 
 </Project>

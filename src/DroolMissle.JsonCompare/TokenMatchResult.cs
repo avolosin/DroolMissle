@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+
 namespace DroolMissle {
     [DebuggerDisplay("IsMatch={IsMatch} Token={Token} Expected={ExpectedJsonValue} Actual={ActualJsonValue} MatchDescription={MatchDescription}")]
     public class TokenMatchResult

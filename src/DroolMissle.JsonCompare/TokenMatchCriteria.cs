@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Net;
-using System.Net.Sockets;
 
-namespace DroolMissle
+namespace DroolMissle.JsonCompare
 {
     public class TokenMatchCriteria
     {
@@ -28,7 +27,7 @@ namespace DroolMissle
 
         public static TokenMatchCriteria AnyIpV4Address(string propName)
         {    
-            return new TokenMatchCriteria(propName, (expected, d) => IPAddress.TryParse(d, out var ip) && ip.AddressFamily == AddressFamily.InterNetwork, $"'{propName}' should be a valid IP Address");
+            return new TokenMatchCriteria(propName, (expected, d) => IPAddress.TryParse(d, out var ip) && ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork, $"'{propName}' should be a valid IP Address");
         }
 
         public static TokenMatchCriteria AnyFutureDateUtc(string propName)

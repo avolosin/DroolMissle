@@ -1,10 +1,6 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
-using NUnit.Framework;
+﻿using System;
 using Shouldly;
+using System.Net;
 
 namespace DroolMissle.HttpTester
 {

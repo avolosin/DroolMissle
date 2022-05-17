@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NUnit.Framework;
+using System.Text.RegularExpressions;
 
-namespace DroolMissle
+namespace DroolMissle.JsonCompare
 {
     public class JsonComparer
     {
@@ -158,13 +155,13 @@ namespace DroolMissle
                 else
                 {
                     tmr.ActualJsonValue = JsonConvert.SerializeObject(actualJValue.Value);
-                }                
+                }
 
                 //see if we can find one by an exact path
                 if (_matchCriteriaByPropertyName.Contains(jv.Path))
                 {
                     var criteria = _matchCriteriaByPropertyName[jv.Path].First();
-                    tmr.IsMatch = criteria.Matches(tmr.ExpectedJsonValue,tmr.ActualJsonValue);
+                    tmr.IsMatch = criteria.Matches(tmr.ExpectedJsonValue, tmr.ActualJsonValue);
                     tmr.IsTokenMatchApplied = true;
                     if (!tmr.IsMatch)
                     {
@@ -179,7 +176,7 @@ namespace DroolMissle
                     if (_matchCriteriaByPropertyName.Contains(genericArrayPath))
                     {
                         var criteria = _matchCriteriaByPropertyName[genericArrayPath].First();
-                        tmr.IsMatch = criteria.Matches(tmr.ExpectedJsonValue,tmr.ActualJsonValue);
+                        tmr.IsMatch = criteria.Matches(tmr.ExpectedJsonValue, tmr.ActualJsonValue);
                         tmr.IsTokenMatchApplied = true;
                         if (!tmr.IsMatch)
                         {
@@ -204,20 +201,20 @@ namespace DroolMissle
                 }
             }
             if (!tmr.IsTokenMatchApplied && jv.Path.Contains("."))
-                {
-                    var navigationProps = jv.Path.Split(".");
-                    var navProp = string.Empty;
+            {
+                var navigationProps = jv.Path.Split(".");
+                var navProp = string.Empty;
 
-                    for (var i = 0; i < navigationProps.Length; i++)
+                for (var i = 0; i < navigationProps.Length; i++)
+                {
+                    navProp += navigationProps[i] + ".";
+                    //syntax to ignore a property or it's children: propertyName.*-
+                    if (_matchCriteriaByPropertyName.Contains($"{navProp}*-"))
                     {
-                        navProp += navigationProps[i] + ".";
-                        //syntax to ignore a property or it's children: propertyName.*-
-                        if (_matchCriteriaByPropertyName.Contains($"{navProp}*-"))
-                        {
-                            tmr.IsMatch = true;
+                        tmr.IsMatch = true;
                         tmr.IsTokenMatchApplied = true;
-                            tmr.IsIgnored = true;
-                            break;
+                        tmr.IsIgnored = true;
+                        break;
                     }
 
                 }
@@ -229,7 +226,7 @@ namespace DroolMissle
             if (!tmr.IsTokenMatchApplied && !tmr.IsMatch)
             {
                 tmr.IsMatch = tmr.ActualJsonValue == tmr.ExpectedJsonValue;
-                tmr.IsTokenMatchApplied = false;                
+                tmr.IsTokenMatchApplied = false;
             }
 
             _matchResults.Add(tmr);
