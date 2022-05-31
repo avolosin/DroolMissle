@@ -43,7 +43,7 @@ namespace DroolMissle.HttpTester
 
         public static async Task<HttpRequestCapture> TestPutAsync<T>(this HttpClient client, string uri, string payload, Encoding encoding, string contentTypeHeader)
         {
-            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Post, RequestStartTime = DateTime.UtcNow };
+            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Put, RequestStartTime = DateTime.UtcNow };
             var sw = Stopwatch.StartNew();
             var response = await client.PutAsync(uri, new StringContent(payload, encoding, contentTypeHeader));
             sw.Stop();
