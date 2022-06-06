@@ -56,14 +56,13 @@ namespace DroolMissle.HttpTester
             return capture;
         }
 
-        public static async Task<HttpRequestCapture> TestDeleteAsync<T>(this HttpClient client, string uri, string payload, Encoding encoding, string contentTypeHeader)
+        public static async Task<HttpRequestCapture> TestDeleteAsync<T>(this HttpClient client, string uri)
         {
             var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Delete, RequestStartTime = DateTime.UtcNow };
             var sw = Stopwatch.StartNew();
             var response = await client.DeleteAsync(uri);
             sw.Stop();
             capture.RequestDuration = sw.Elapsed;
-            capture.RequestBody = payload;
             capture.RequestEndTime = DateTime.UtcNow;
             capture.ResponseStatusCode = response.StatusCode;
 
@@ -94,7 +93,7 @@ namespace DroolMissle.HttpTester
 
         public static async Task<HttpRequestCapture> TestPutJsonAsync<T>(this HttpClient client, string uri, T payload)
         {
-            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Post, RequestStartTime = DateTime.UtcNow };
+            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Put, RequestStartTime = DateTime.UtcNow };
 
             var sw = Stopwatch.StartNew();
             var postJson = JsonConvert.SerializeObject(payload, Formatting.None);
