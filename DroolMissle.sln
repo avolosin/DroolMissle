@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroolMissle.JsonCompare", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroolMissle.HttpTester.NUnit", "src\DroolMissle.HttpTester.NUnit\DroolMissle.HttpTester.NUnit.csproj", "{DE7FE554-3952-440C-B977-F8DDC7F2615D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroolMissle.JsonCompare..Tests", "tests\DroolMissle.JsonCompare.Tests\DroolMissle.JsonCompare..Tests.csproj", "{C5032F22-3A81-4D99-B32C-7B638243BA25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroolMissle.JsonCompare.Tests", "tests\DroolMissle.JsonCompare.Tests\DroolMissle.JsonCompare.Tests.csproj", "{C5032F22-3A81-4D99-B32C-7B638243BA25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroolMissle.FunctionalTests", "tests\DroolMissle.FunctionalTests\DroolMissle.FunctionalTests.csproj", "{64289F60-C24B-4853-AC56-3C273E8645CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{606F2B61-232E-4FC0-863D-64CA8E2887B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,17 @@ Global
 		{C5032F22-3A81-4D99-B32C-7B638243BA25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5032F22-3A81-4D99-B32C-7B638243BA25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5032F22-3A81-4D99-B32C-7B638243BA25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64289F60-C24B-4853-AC56-3C273E8645CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64289F60-C24B-4853-AC56-3C273E8645CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64289F60-C24B-4853-AC56-3C273E8645CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64289F60-C24B-4853-AC56-3C273E8645CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5032F22-3A81-4D99-B32C-7B638243BA25} = {606F2B61-232E-4FC0-863D-64CA8E2887B9}
+		{64289F60-C24B-4853-AC56-3C273E8645CE} = {606F2B61-232E-4FC0-863D-64CA8E2887B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B6DD2F8-F3AD-468A-9C73-F3E4077E5FE2}
