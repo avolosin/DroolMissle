@@ -2,9 +2,8 @@ name: DroolMissle.HttpTester.NUnit
 
 on:
   push:
-    tags: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    tags:
+      - 'nunit-*'
 
 jobs:
   build:
