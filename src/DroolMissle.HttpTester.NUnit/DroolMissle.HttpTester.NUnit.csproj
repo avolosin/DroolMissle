@@ -15,7 +15,7 @@
 	<!--nuget package details-->
 	<PropertyGroup>
 		<Id>DroolMissle.HttpTester.NUnit</Id>
-		<Version>2.0.2</Version>
+		<Version>2.1.0</Version>
 		<Title>DroolMissle Http Tester for NUnit</Title>
 		<Authors>Oliver the Dog</Authors>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
