@@ -39,14 +39,28 @@ namespace DroolMissle.HttpTester
             return capture;
         }
 
-        public static async Task<HttpRequestCapture> TestDeleteAsync<T>(this HttpClient client, string uri, string payload, Encoding encoding, string contentTypeHeader)
+        public static async Task<HttpRequestCapture> TestPutAsync<T>(this HttpClient client, string uri, string payload, Encoding encoding, string contentTypeHeader)
         {
-            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Delete, RequestStartTime = DateTime.UtcNow };
+            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Put, RequestStartTime = DateTime.UtcNow };
             var sw = Stopwatch.StartNew();
-            var response = await client.PostAsync(uri, new StringContent(payload, encoding, contentTypeHeader));
+            var response = await client.PutAsync(uri, new StringContent(payload, encoding, contentTypeHeader));
             sw.Stop();
             capture.RequestDuration = sw.Elapsed;
             capture.RequestBody = payload;
+            capture.RequestEndTime = DateTime.UtcNow;
+            capture.ResponseStatusCode = response.StatusCode;
+
+            capture.ResponseContent = await response.Content.ReadAsStringAsync();
+            return capture;
+        }
+
+        public static async Task<HttpRequestCapture> TestDeleteAsync<T>(this HttpClient client, string uri)
+        {
+            var capture = new HttpRequestCapture() { Url = uri, Method = HttpMethod.Delete, RequestStartTime = DateTime.UtcNow };
+            var sw = Stopwatch.StartNew();
+            var response = await client.DeleteAsync(uri);
+            sw.Stop();
+            capture.RequestDuration = sw.Elapsed;
             capture.RequestEndTime = DateTime.UtcNow;
             capture.ResponseStatusCode = response.StatusCode;
 
