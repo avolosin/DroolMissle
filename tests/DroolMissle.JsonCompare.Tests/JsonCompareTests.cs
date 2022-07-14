@@ -1,6 +1,7 @@
 using DroolMissle.JsonCompare;
 using Newtonsoft.Json;
 using Shouldly;
+using Xunit;
 
 namespace DroolMissle.Tests
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using Shouldly;
+﻿using Shouldly;
 using System.Net;
 
 namespace DroolMissle.HttpTester

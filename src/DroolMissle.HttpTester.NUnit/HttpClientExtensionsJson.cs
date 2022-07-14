@@ -1,9 +1,8 @@
-﻿using System;
+﻿using DroolMissle.JsonCompare;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using System.Text.RegularExpressions;
-using DroolMissle.JsonCompare;
 using Shouldly;
+using System.Text.RegularExpressions;
 
 
 namespace DroolMissle.HttpTester
