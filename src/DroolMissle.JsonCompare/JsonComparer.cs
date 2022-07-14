@@ -11,6 +11,11 @@ namespace DroolMissle.JsonCompare
         private object _actualJToken;
         private List<TokenMatchResult> _matchResults;
         private ILookup<string, TokenMatchCriteria> _matchCriteriaByPropertyName;
+        public JsonComparer()
+        {
+            //HD: mitigration of https://github.com/advisories/GHSA-5crp-9r3c-p9vr without forcing clients to upgrade to 13.0.1
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
+        }
 
         public static List<TokenMatchResult> Compare(string expectedJson, string actualJson, params TokenMatchCriteria[] matchCriteria)
         {
