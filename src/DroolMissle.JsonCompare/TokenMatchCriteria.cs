@@ -34,13 +34,21 @@ namespace DroolMissle.JsonCompare
             return new TokenMatchCriteria(propName, (expected, d) => DateTime.TryParse(d, out var date) && date >= DateTime.UtcNow, $"'{propName}' should be a valid date in the future");
         }
 
-        public static TokenMatchCriteria AnyGuid(string propName)
+        public static TokenMatchCriteria AnyGuid(string propName, bool allowNulls = false)
         {
+            if (allowNulls)
+            {
+                return new TokenMatchCriteria(propName, (expected, d) => d == "null" || Guid.TryParse(d, out var _), $"'{propName}' should be a valid guid");
+            }
             return new TokenMatchCriteria(propName, (expected, d) => Guid.TryParse(d, out var _), $"'{propName}' should be a valid guid");
         }
 
-        public static TokenMatchCriteria AnyInteger(string propName)
+        public static TokenMatchCriteria AnyInteger(string propName, bool allowNulls = false)
         {
+            if (allowNulls)
+            {
+                return new TokenMatchCriteria(propName, (expected, d) => d == "null" || int.TryParse(d, out var _), $"'{propName}' should be a valid integer");
+            }
             return new TokenMatchCriteria(propName, (expected, d) => int.TryParse(d, out var _), $"'{propName}' should be a valid integer");
         }
 
@@ -48,8 +56,12 @@ namespace DroolMissle.JsonCompare
         {
             return new TokenMatchCriteria(propName, (expected, d) => true, $"Property was excluded but somehow didn't match!? WTF?!");
         }
-        public static TokenMatchCriteria AnyBoolean(string propName)
+        public static TokenMatchCriteria AnyBoolean(string propName, bool allowNulls = false)
         {
+            if (allowNulls)
+            {
+                return new TokenMatchCriteria(propName, (expected, d) => d == "null" || bool.TryParse(d, out var _), $"'{propName}' should be a valid boolean");
+            }
             return new TokenMatchCriteria(propName, (expected, d) => bool.TryParse(d, out var _), $"'{propName}' should be a valid boolean");
         }
 
