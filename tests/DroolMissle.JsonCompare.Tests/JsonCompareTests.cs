@@ -231,5 +231,61 @@ namespace DroolMissle.Tests
 
             comparisonResults.Count(c => c.IsMatch == false).ShouldBe(0, "All values should match since the BirthDate field is allowed to be null");
         }
+
+        [Fact]
+        public void JsonCompare_Date_NullDate_Array()
+        {
+            var expected = new
+            {
+                items = new[] {
+                    new {
+                        UUID = Guid.NewGuid(),
+                        FirstName = "Guy",
+                        LastName = "Fawkes",
+                        Skills = new List<string>() { "cool", "stuff" },
+                        BirthDate = DateTime.Parse("1570-04-13"),
+                    },
+                    new {
+                        UUID = Guid.NewGuid(),
+                        FirstName = "Robert",
+                        LastName = "Catesby",
+                        Skills = new List<string>() { "unknown", "stuff" },
+                        BirthDate = DateTime.Parse("1574-12-25"),
+                    }
+                }
+
+            };
+
+            var actual = new
+            {
+                items = new[] {
+                    new {
+                        UUID = Guid.NewGuid(),
+                        FirstName = "Guy",
+                        LastName = "Fawkes",
+                        Skills = new List<string>() { "cool", "stuff" },
+
+                    },
+                    new {
+                        UUID = Guid.NewGuid(),
+                        FirstName = "Robert",
+                        LastName = "Catesby",
+                        Skills = new List<string>() { "unknown", "stuff" },
+
+                    }
+                }
+
+            };
+
+
+            var matchCriteria = new List<TokenMatchCriteria>()
+            {
+                TokenMatchCriteria.AnyDate("item[*].BirthDate",true)
+            };
+
+            var comparisonResults = JsonComparer.Compare(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(actual), matchCriteria.ToArray());
+
+            comparisonResults.Count(c => c.IsMatch == false).ShouldBe(0, "All values should match since the BirthDate field is allowed to be null");
+        }
     }
 }
